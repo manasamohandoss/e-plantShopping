@@ -253,9 +253,9 @@ const handlePlantsClick = (e) => {
     e.preventDefault();
     setShowCart(false);
   };
-  const handleAddtoCart=(product)=>{
+  const handleAddToCart=(product)=>{
     dispatch(addItem(product));
-    setAddedtoCart((prevState)=>({
+    setAddedToCart((prevState)=>({
         ...prevState,[product.name]:true,
     }));
 }
