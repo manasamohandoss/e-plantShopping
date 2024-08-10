@@ -1,12 +1,13 @@
 import React, { useState,useEffect } from 'react';
 import './ProductList.css'
-import { addItem} from './CartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import CartItem from './CartItem';
+import { addItem} from './CartSlice';
 function ProductList() {
     const [addedToCart, setAddedToCart] = useState({});
     const [showCart, setShowCart] = useState(false); 
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+
     const dispatch=useDispatch();
     const totalQuantity=useSelector((state)=>state.cart.totalQuantity);
     const items=useSelector((state)=>state.cart.items);
@@ -252,11 +253,11 @@ const handlePlantsClick = (e) => {
     e.preventDefault();
     setShowCart(false);
   };
-  const handleAddToCart = (product) => {
-  dispatch(addItem(product));
-  setAddedToCart((prevState) => ({
-     ...prevState,[product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
-   }));
+  const handleAddtoCart=(product)=>{
+    dispatch(addItem(product));
+    setAddedtoCart((prevState)=>({
+        ...prevState,[product.name]:true,
+    }));
 }
     return (
         <div>
@@ -280,21 +281,28 @@ const handlePlantsClick = (e) => {
         </div>
         {!showCart? (
         <div className="product-grid">
-                {plantsArray.map((category, index) => (
+                {
+                plantsArray.map((item,index) => (
     <div key={index}>
-        <h1><div>{category.category}</div></h1>
+        <h1><div>{item.category}</div></h1>
         <div className="product-list">
-            {category.plants.map((plant, plantIndex) => (
-            <div className="product-card" key={plantIndex}>
-                <img className="product-image" src={plant.image} alt={plant.name} />
+            {item.plants.map((plant,pindex) => (
+            <div className="product-card" key={pindex}>
+                <img className="product-image" src={plant.image}/>
                 <div className="product-title">{plant.name}</div>
-                {/*Similarly like the above plant.name show other details like description and cost*/}
-                <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                <div className='product-price'>{plant.cost}</div>
+                <div>{plant.description}</div>
+                                    { !items.find((sample)=>sample.name===plant.name)?(
+                     <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                    ):(<h3 className='product-button added-to-cart'>Added to Cart</h3>) 
+                }
             </div>
-            ))}
+            ))
+            }
         </div>
     </div>
-    ))}
+    ))
+    }
 
         </div>
  ) :  (
